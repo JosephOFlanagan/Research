@@ -1,0 +1,58 @@
+Creating a RESTful Root Resource Class
+
+Root resource classes are POJOs that are either annotated with @Path or have at least one method annotated with @Path or a request method designator, such as @GET, @PUT, @POST, or @DELETE. Resource methods are methods of a resource class annotated with a request method designator. This section explains how to use JAX-RS to annotate Java classes to create RESTful web services.
+Developing RESTful Web Services with JAX-RS
+
+JAX-RS is a Java programming language API designed to make it easy to develop applications that use the REST architecture.
+
+The JAX-RS API uses Java programming language annotations to simplify the development of RESTful web services. Developers decorate Java programming language class files with JAX-RS annotations to define resources and the actions that can be performed on those resources. JAX-RS annotations are runtime annotations; therefore, runtime reflection will generate the helper classes and artifacts for the resource. A Java EE application archive containing JAX-RS resource classes will have the resources configured, the helper classes and artifacts generated, and the resource exposed to clients by deploying the archive to a Java EE server.
+
+Table 20-1 lists some of the Java programming annotations that are defined by JAX-RS, with a brief description of how each is used. Further information on the JAX-RS APIs can be viewed at http://docs.oracle.com/javaee/6/api/.
+
+Overview of a JAX-RS Application
+
+The following code sample is a very simple example of a root resource class that uses JAX-RS annotations:
+
+package com.sun.jersey.samples.helloworld.resources;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Produces;
+import javax.ws.rs.Path;
+
+// The Java class will be hosted at the URI path "/helloworld"
+@Path("/helloworld")
+public class HelloWorldResource {
+    
+    // The Java method will process HTTP GET requests
+    @GET
+    // The Java method will produce content identified by the MIME Media
+    // type "text/plain"
+    @Produces("text/plain")
+    public String getClichedMessage() {
+        // Return some cliched textual content
+        return "Hello World";
+    }
+
+
+The @Path Annotation and URI Path Templates
+
+The @Path annotation identifies the URI path template to which the resource responds and is specified at the class or method level of a resource. The @Path annotation’s value is a partial URI path template relative to the base URI of the server on which the resource is deployed, the context root of the application, and the URL pattern to which the JAX-RS runtime responds.
+
+URI path templates are URIs with variables embedded within the URI syntax. These variables are substituted at runtime in order for a resource to respond to a request based on the substituted URI. Variables are denoted by braces ({ and }). For example, look at the following @Path annotation:
+
+@Path("/users/{username}")
+
+In this kind of example, a user is prompted to type his or her name, and then a JAX-RS web service configured to respond to requests to this URI path template responds. For example, if the user types the user name “Galileo,” the web service responds to the following URL:
+
+http://example.com/users/Galileo
+
+To obtain the value of the user name, the @PathParam annotation may be used on the method parameter of a request method, as shown in the following code example:
+
+@Path("/users/{username}")
+public class UserResource {
+
+    @GET
+    @Produces("text/xml")
+    public String getUser(@PathParam("username") String userName) {
+        ...
+    }
