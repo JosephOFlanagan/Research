@@ -10,5 +10,10 @@ public class Examples
       {
         scores[x] = new byte[4];
       }
+      
+      for (int i == 0; i <names.Length; i++)
+      {
+        Console.WriteLine(numbers[i] + names[i])
+      }
     }
 }
